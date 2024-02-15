@@ -1,6 +1,6 @@
 import React from "react";
 
-const StarOutline = () => {
+const StarOutline = ({color} : {color: string}) => {
   return (
     <span>
       <svg
@@ -8,7 +8,7 @@ const StarOutline = () => {
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
-        stroke="currentColor"
+        stroke={color}
         className="w-6 h-6"
       >
         <path

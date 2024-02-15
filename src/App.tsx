@@ -8,6 +8,8 @@ const App = () => {
   return (
     <>
       <StarRating maxRating={10}/>
+      <StarRating color='red' size={16} defaultRating={3} messages={['Bad', 'Terrible', 'Average', 'Good', 'Amazing']}/>
+
       {/* <Navbar/>
       <Main/> */}
     </>
