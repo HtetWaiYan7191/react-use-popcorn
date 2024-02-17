@@ -1,14 +1,10 @@
-import React from 'react'
-import Logo from './Logo'
-import SearchBar from './SearchBar'
-import NumOfResults from './NumOfResults'
+import React, { ReactNode } from 'react'
 
-const Navbar = () => {
+
+const Navbar = ({children} : {children: ReactNode}) => {
   return (
-    <nav>
-        <Logo/>
-        <SearchBar/>
-        <NumOfResults/>
+    <nav className='flex items-center justify-between px-8 py-4 text-white bg-purple-600'>
+       {children}
     </nav>
   )
 }

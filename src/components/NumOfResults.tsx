@@ -2,7 +2,7 @@ import React from 'react'
 
 const NumOfResults = () => {
   return (
-    <div>NumOfResults</div>
+    <h2>Found X Movies</h2>
   )
 }
 

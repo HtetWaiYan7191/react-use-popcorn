@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import MovieLists from './MovieLists'
 import WatchedMovieLists from './WatchedMovieLists'
 
-const Main = () => {
+const Main = ({children} : {children: ReactNode}) => {
   return (
-    <div>
-        <MovieLists/>
-        <WatchedMovieLists/>
-    </div>
+    <main className='flex justify-around gap-4 p-6'>
+        {children}
+    </main>
   )
 }
 
