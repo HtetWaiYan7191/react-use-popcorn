@@ -26,7 +26,7 @@ const WatchMovie = ({ movie, handleRemoveWatchMovie }: { movie: watchMovieProps;
 
             <p>
               <span>⏳</span>
-              <span>{movie.runtime}</span>
+              <span>{movie.runtime || `N/A`} min</span>
             </p>
           </div>
         </div>

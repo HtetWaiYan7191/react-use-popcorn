@@ -17,12 +17,14 @@ const App = () => {
   const [movies, setMovies] = useState([]);
   const [watchMovies, setWatchMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("marvel");
+  const [query, setQuery] = useState("");
   const [error, setError] = useState("");
   const [hideMovieList, setHideMovieList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
   const [hideWatchedMovieList, setHideWatchedMovieList] = useState(false);
+  
+
   
   const handleShowDetail = (id: string) => {
     setShowDetail(true);
@@ -85,6 +87,7 @@ const App = () => {
 
   useEffect(() => {
     const controller = new AbortController();
+    handleHideWatchedMovie();
     fetchSearchMovies(controller);
 
     return(() => {controller.abort})
@@ -123,7 +126,7 @@ const App = () => {
         </Box>
         <Box>
           {showDetail && !hideWatchedMovieList ? (
-            <MovieDetail watchMovies={watchMovies} selectedMovie={selectedMovie} handleAddWatchMovie={handleAddWatchMovie} />
+            <MovieDetail watchMovies={watchMovies} onHideMovieDetail={handleHideWatchedMovie} selectedMovie={selectedMovie} handleAddWatchMovie={handleAddWatchMovie} />
           ) : (
             <>
               <WatchedSummary watchMovies={watchMovies} />

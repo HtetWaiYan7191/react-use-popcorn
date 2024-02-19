@@ -7,8 +7,10 @@ const MovieDetail = ({
   selectedMovie,
   handleAddWatchMovie,
   watchMovies,
+  onHideMovieDetail
 }: {
   selectedMovie: string;
+  onHideMovieDetail: () => void;
   handleAddWatchMovie: (movie: watchMovieProps) => void;
   watchMovies: watchMovieProps[];
 }) => {
@@ -40,6 +42,20 @@ const MovieDetail = ({
   const onHandleRating = (rating: number) => {
     setUserRating(rating);
   };
+
+  useEffect(() => {
+    function callback(e) {
+      if(e.code === 'Escape') {
+        onHideMovieDetail()
+        console.log('closing')
+      }
+    }
+    document.addEventListener('keydown', callback)
+
+    return function(){
+      document.removeEventListener('keydown', callback)
+    }
+  },[onHideMovieDetail])
 
   useEffect(
     function () {
