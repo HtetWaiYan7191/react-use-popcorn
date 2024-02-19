@@ -2,15 +2,15 @@ import React from 'react'
 import { watchMovieProps } from '../types/type'
 import WatchMovie from './WatchMovie'
 
-const WatchedMovieLists = ({watchMovies} : {watchMovies: watchMovieProps[]}) => {
+const WatchedMovieLists = ({watchMovies, handleRemoveWatchMovie} : {watchMovies: watchMovieProps[]; handleRemoveWatchMovie: () => void}) => {
   return (
-    <div className=''>
+    <>
       {
         watchMovies.reverse().map((movie) => (
-          <WatchMovie key={movie.imdb} movie={movie}/>
+          <WatchMovie key={movie.imdb} movie={movie} handleRemoveWatchMovie={handleRemoveWatchMovie} />
         ))
       }
-    </div>
+    </>
   )
 }
 

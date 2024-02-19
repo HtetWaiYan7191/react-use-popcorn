@@ -9,7 +9,6 @@ import WatchedMovieLists from "./components/WatchedMovieLists";
 import Box from "./components/Box";
 import WatchedSummary from "./components/WatchedSummary";
 import ErrorMessage from "./components/Error";
-import { debounce } from "lodash"; // Import debounce function from lodash library
 import MovieDetail from "./components/MovieDetail";
 import { watchMovieProps } from "./types/type";
 
@@ -18,7 +17,7 @@ const App = () => {
   const [movies, setMovies] = useState([]);
   const [watchMovies, setWatchMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("marvel");
   const [error, setError] = useState("");
   const [hideMovieList, setHideMovieList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -30,6 +29,10 @@ const App = () => {
     setSelectedMovie(id);
     setHideWatchedMovieList(false);
   };
+
+  const handleRemoveWatchMovie = (id: string) => {
+    setWatchMovies((prev) => prev.filter(movie => movie.imdb !== id))
+  }
 
   const handleResetWatchMovies = () => {
     setWatchMovies([]);
@@ -65,6 +68,7 @@ const App = () => {
         }
 
         const data = await result.json();
+        console.log(data);
         if (data.Response == "False") {
           throw new Error(" Movie Not Found");
         }
@@ -104,6 +108,7 @@ const App = () => {
               movies={movies}
               selectedMovie={selectedMovie}
               handleShowDetail={handleShowDetail}
+             
             />
           )}
           {error && <ErrorMessage errorMessage={error} />}
@@ -120,7 +125,7 @@ const App = () => {
           ) : (
             <>
               <WatchedSummary watchMovies={watchMovies} />
-              <WatchedMovieLists watchMovies={watchMovies} />
+              <WatchedMovieLists watchMovies={watchMovies}  handleRemoveWatchMovie={handleRemoveWatchMovie} />
             </>
           )}
 
