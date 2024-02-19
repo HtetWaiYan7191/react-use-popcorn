@@ -15,7 +15,11 @@ import { watchMovieProps } from "./types/type";
 const App = () => {
   const apiKey = "4df43510";
   const [movies, setMovies] = useState([]);
-  const [watchMovies, setWatchMovies] = useState([]);
+  const [watchMovies, setWatchMovies] = useState(function() {
+    const data = localStorage.getItem('watchMovies');
+    const parseData = JSON.parse(data);
+    return parseData ? parseData : [];
+  });
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -92,6 +96,10 @@ const App = () => {
 
     return(() => {controller.abort})
   }, [query]);
+
+  useEffect(() => {
+    localStorage.setItem('watchMovies', JSON.stringify(watchMovies))
+  }, [watchMovies])
 
   return (
     <>
