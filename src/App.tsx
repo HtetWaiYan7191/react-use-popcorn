@@ -11,10 +11,12 @@ import WatchedSummary from "./components/WatchedSummary";
 import ErrorMessage from "./components/Error";
 import { debounce } from "lodash"; // Import debounce function from lodash library
 import MovieDetail from "./components/MovieDetail";
+import { watchMovieProps } from "./types/type";
 
 const App = () => {
   const apiKey = "4df43510";
   const [movies, setMovies] = useState([]);
+  const [watchMovies, setWatchMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -22,16 +24,25 @@ const App = () => {
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
   const [hideWatchedMovieList, setHideWatchedMovieList] = useState(false);
-
+  
   const handleShowDetail = (id: string) => {
     setShowDetail(true);
     setSelectedMovie(id);
     setHideWatchedMovieList(false);
   };
 
+  const handleResetWatchMovies = () => {
+    setWatchMovies([]);
+  }
+
   const handleHideMovieList = () => {
     setHideMovieList(true);
   };
+
+  const handleAddWatchMovie = (movie:watchMovieProps) => {
+    setWatchMovies((prev) => [...prev, movie])
+    setShowDetail(false);
+  }
 
   const handleHideWatchedMovie = () => {
     setHideWatchedMovieList(true);
@@ -70,7 +81,7 @@ const App = () => {
   useEffect(() => {
     fetchSearchMovies();
 
-    return () => console.log("clean up function");
+    return(() => {})
   }, [query]);
 
   return (
@@ -78,7 +89,7 @@ const App = () => {
       <Navbar>
         <Logo />
         <SearchBar query={query} handleSearchQuery={handleSearchQuery} />
-        <NumOfResults />
+        <NumOfResults length={movies.length} />
       </Navbar>
 
       <Main>
@@ -105,15 +116,15 @@ const App = () => {
         </Box>
         <Box>
           {showDetail && !hideWatchedMovieList ? (
-            <MovieDetail selectedMovie={selectedMovie} />
+            <MovieDetail watchMovies={watchMovies} selectedMovie={selectedMovie} handleAddWatchMovie={handleAddWatchMovie} />
           ) : (
             <>
-              <WatchedSummary />
-              <WatchedMovieLists />
+              <WatchedSummary watchMovies={watchMovies} />
+              <WatchedMovieLists watchMovies={watchMovies} />
             </>
           )}
 
-          <button className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
+          <button onClick={handleResetWatchMovies} className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
             -
           </button>
           {showDetail && <button
