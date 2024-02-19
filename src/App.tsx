@@ -9,7 +9,8 @@ import WatchedMovieLists from "./components/WatchedMovieLists";
 import Box from "./components/Box";
 import WatchedSummary from "./components/WatchedSummary";
 import ErrorMessage from "./components/Error";
-import {debounce} from 'lodash'; // Import debounce function from lodash library
+import { debounce } from "lodash"; // Import debounce function from lodash library
+import MovieDetail from "./components/MovieDetail";
 
 const App = () => {
   const apiKey = "4df43510";
@@ -18,11 +19,23 @@ const App = () => {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
   const [hideMovieList, setHideMovieList] = useState(false);
-
+  const [showDetail, setShowDetail] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
+  const [hideWatchedMovieList, setHideWatchedMovieList] = useState(false);
+  
+  const handleShowDetail = (id:string) => {
+    setShowDetail(true);
+    setSelectedMovie(id);
+    setHideWatchedMovieList(false);
+  };
 
   const handleHideMovieList = () => {
     setHideMovieList(true);
   };
+
+  const handleHideWatchedMovie = () => {
+    setHideWatchedMovieList(true);
+  }
 
   const handleSearchQuery = async (target: string) => {
     setQuery(target);
@@ -56,7 +69,7 @@ const App = () => {
   useEffect(() => {
     fetchSearchMovies();
 
-    return(() => console.log('clean up function'))
+    return () => console.log("clean up function");
   }, [query]);
 
   return (
@@ -75,7 +88,7 @@ const App = () => {
             </h2>
           )}
           {!loading && !error && !hideMovieList && (
-            <MovieLists movies={movies} />
+            <MovieLists movies={movies} selectedMovie={selectedMovie} handleShowDetail={handleShowDetail} />
           )}
           {error && <ErrorMessage errorMessage={error} />}
           <button
@@ -86,9 +99,16 @@ const App = () => {
           </button>
         </Box>
         <Box>
-          <WatchedSummary />
-          <WatchedMovieLists />
-          <button className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
+          {showDetail && !hideWatchedMovieList  ?  (
+            <MovieDetail selectedMovie={selectedMovie} />
+          ) : (
+            <>
+              <WatchedSummary />
+              <WatchedMovieLists />
+            </>
+          )}
+
+          <button onClick={handleHideWatchedMovie} className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
             -
           </button>
         </Box>

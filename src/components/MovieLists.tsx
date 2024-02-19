@@ -8,16 +8,16 @@ export interface MovieListsProps {
   Year: string;
   imdbID: string;
 }
-const MovieLists = ({movies} : {movies:MovieListsProps[]}) => {
+const MovieLists = ({movies, handleShowDetail, selectedMovie} : {movies:MovieListsProps[], selectedMovie:string; handleShowDetail: (id:string) => void}) => {
   return (
-    <div className='flex flex-col movie-list-container'>
+    <ul className='flex flex-col movie-list-container'>
       {
         movies?.map((movie) => (
-          <Movie movie={movie} key={movie.imdbID} />
+          <Movie handleShowDetail={handleShowDetail} selectedMovie={selectedMovie} movie={movie} key={movie.imdbID} />
         ))
       }
 
-    </div>
+    </ul>
   )
 }
 
