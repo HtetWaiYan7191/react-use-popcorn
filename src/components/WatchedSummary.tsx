@@ -29,7 +29,7 @@ const avgTime = watchMovies?.length > 0 ?
         <li>{watchMovies.length} movies</li>
         <li>⭐ {avgImdbStar.toFixed(2) || 0}</li>
         <li>🌟 {avgUserStar.toFixed(2) || 0}</li>
-        <li>⏲️ {avgTime || 0 } min</li>
+        <li>⏲️ {avgTime.toFixed(2) || 0 } min</li>
       </ul>
     </div>
   )

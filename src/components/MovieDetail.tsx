@@ -58,6 +58,13 @@ const MovieDetail = ({
     },
     [selectedMovie]
   );
+
+  useEffect(() => {
+    document.title = `Movie | ${title}`;
+
+    return (() => document.title = "usePopcorn");
+  }, [title]);
+  
   return (
     <div className=" movie-detail-conainer">
       {isLoading ? (

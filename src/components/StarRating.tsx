@@ -5,7 +5,6 @@ const StarRating = ({maxRating = 5,  color="#fcc419", size=32, messages=[], defa
     const [rating, setRating] = React.useState(defaultRating)
     const [tempRating, setTempRating] = useState(0)
     const[selected, setSelected] = useState(defaultRating);
-    console.log(selected);
     
     const handleRating = (starRating: number) => {
         selected === starRating ? (setRating(0), setSelected(0)) : (setRating(starRating), setSelected(starRating), onHandleRating(starRating));
