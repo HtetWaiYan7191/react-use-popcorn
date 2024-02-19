@@ -22,8 +22,8 @@ const App = () => {
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
   const [hideWatchedMovieList, setHideWatchedMovieList] = useState(false);
-  
-  const handleShowDetail = (id:string) => {
+
+  const handleShowDetail = (id: string) => {
     setShowDetail(true);
     setSelectedMovie(id);
     setHideWatchedMovieList(false);
@@ -35,7 +35,8 @@ const App = () => {
 
   const handleHideWatchedMovie = () => {
     setHideWatchedMovieList(true);
-  }
+    setShowDetail(false);
+  };
 
   const handleSearchQuery = async (target: string) => {
     setQuery(target);
@@ -88,7 +89,11 @@ const App = () => {
             </h2>
           )}
           {!loading && !error && !hideMovieList && (
-            <MovieLists movies={movies} selectedMovie={selectedMovie} handleShowDetail={handleShowDetail} />
+            <MovieLists
+              movies={movies}
+              selectedMovie={selectedMovie}
+              handleShowDetail={handleShowDetail}
+            />
           )}
           {error && <ErrorMessage errorMessage={error} />}
           <button
@@ -99,7 +104,7 @@ const App = () => {
           </button>
         </Box>
         <Box>
-          {showDetail && !hideWatchedMovieList  ?  (
+          {showDetail && !hideWatchedMovieList ? (
             <MovieDetail selectedMovie={selectedMovie} />
           ) : (
             <>
@@ -108,9 +113,15 @@ const App = () => {
             </>
           )}
 
-          <button onClick={handleHideWatchedMovie} className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
+          <button className="absolute w-8 h-8 pb-1 text-lg rounded-full right-2 top-2 bg-slate-900">
             -
           </button>
+          {showDetail && <button
+            onClick={handleHideWatchedMovie}
+            className="absolute w-8 h-8 pb-1 text-lg rounded-full left-2 top-2 bg-slate-900"
+          >
+            &larr;
+          </button> }
         </Box>
       </Main>
     </>
