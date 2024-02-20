@@ -3,6 +3,7 @@ import StarRating from "./StarRating";
 import { watchMovieProps } from "../types/type";
 import Star from "./svgIcons/Star";
 import { useKey } from "../useKey";
+import { useTitle } from "../useTitle";
 
 const MovieDetail = ({
   selectedMovie,
@@ -45,7 +46,7 @@ const MovieDetail = ({
     setUserRating(rating);
   };
 
-  useKey('Escape', onHideMovieDetail);
+  useKey("Escape", onHideMovieDetail);
 
   useEffect(
     function () {
@@ -65,14 +66,10 @@ const MovieDetail = ({
     [selectedMovie]
   );
 
-  useEffect(() => {
-    document.title = `Movie | ${title}`;
-
-    return () => (document.title = "usePopcorn");
-  }, [title]);
+  useTitle(title);
 
   useEffect(() => {
-    if(userRating) {
+    if (userRating) {
       ratingTimesCount.current = ratingTimesCount.current + 1;
     }
   }, [userRating]);
