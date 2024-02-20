@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useMovies(query:string, callback:() => void) {
+export function useMovies(query:string) {
     const apiKey = "4df43510";
 
     const [movies, setMovies] = useState([]);
@@ -36,7 +36,7 @@ export function useMovies(query:string, callback:() => void) {
 
       
     useEffect(() => {
-        callback?.();
+        // callback?.();
         const controller = new AbortController();
         // handleHideWatchedMovie();
         fetchSearchMovies(controller);

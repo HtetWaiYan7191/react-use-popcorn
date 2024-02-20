@@ -12,16 +12,13 @@ import ErrorMessage from "./components/Error";
 import MovieDetail from "./components/MovieDetail";
 import { watchMovieProps } from "./types/type";
 import { useMovies } from "./useMovies";
+import { useLocalStorageState } from "./useLocalStorageState";
 
 const App = () => {
   const apiKey = "4df43510";
-  const [watchMovies, setWatchMovies] = useState(function () {
-    const data = localStorage.getItem("watchMovies");
-    const parseData = JSON.parse(data);
-    return parseData ? parseData : [];
-  });
+  const [watchMovies, setWatchMovies] = useLocalStorageState([], "watchMovies");
   const [query, setQuery] = useState("");
-  const {movies, loading, error} = useMovies(query, handleHideWatchedMovie);
+  const { movies, loading, error } = useMovies(query);
   const [hideMovieList, setHideMovieList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
@@ -53,16 +50,11 @@ const App = () => {
   function handleHideWatchedMovie() {
     setHideWatchedMovieList(true);
     setShowDetail(false);
-  };
+  }
 
   const handleSearchQuery = async (target: string) => {
     setQuery(target);
   };
-
-
-  useEffect(() => {
-    localStorage.setItem("watchMovies", JSON.stringify(watchMovies));
-  }, [watchMovies]);
 
   return (
     <>

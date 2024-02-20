@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import { watchMovieProps } from "../types/type";
 import Star from "./svgIcons/Star";
+import { useKey } from "../useKey";
 
 const MovieDetail = ({
   selectedMovie,
@@ -44,19 +45,7 @@ const MovieDetail = ({
     setUserRating(rating);
   };
 
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Escape") {
-        onHideMovieDetail();
-        console.log("closing");
-      }
-    }
-    document.addEventListener("keydown", callback);
-
-    return function () {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onHideMovieDetail]);
+  useKey('Escape', onHideMovieDetail);
 
   useEffect(
     function () {
