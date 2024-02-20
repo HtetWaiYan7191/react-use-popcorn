@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import { watchMovieProps } from "../types/type";
 import Star from "./svgIcons/Star";
@@ -7,7 +7,7 @@ const MovieDetail = ({
   selectedMovie,
   handleAddWatchMovie,
   watchMovies,
-  onHideMovieDetail
+  onHideMovieDetail,
 }: {
   selectedMovie: string;
   onHideMovieDetail: () => void;
@@ -24,6 +24,7 @@ const MovieDetail = ({
   const isWatched = watchMovies
     .map((movie) => movie.imdb)
     .includes(selectedMovie);
+  const ratingTimesCount = useRef(0);
 
   const apiKey = "4df43510";
   const {
@@ -45,17 +46,17 @@ const MovieDetail = ({
 
   useEffect(() => {
     function callback(e) {
-      if(e.code === 'Escape') {
-        onHideMovieDetail()
-        console.log('closing')
+      if (e.code === "Escape") {
+        onHideMovieDetail();
+        console.log("closing");
       }
     }
-    document.addEventListener('keydown', callback)
+    document.addEventListener("keydown", callback);
 
-    return function(){
-      document.removeEventListener('keydown', callback)
-    }
-  },[onHideMovieDetail])
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [onHideMovieDetail]);
 
   useEffect(
     function () {
@@ -78,9 +79,15 @@ const MovieDetail = ({
   useEffect(() => {
     document.title = `Movie | ${title}`;
 
-    return (() => document.title = "usePopcorn");
+    return () => (document.title = "usePopcorn");
   }, [title]);
-  
+
+  useEffect(() => {
+    if(userRating) {
+      ratingTimesCount.current = ratingTimesCount.current + 1;
+    }
+  }, [userRating]);
+
   return (
     <div className=" movie-detail-conainer">
       {isLoading ? (
@@ -118,6 +125,7 @@ const MovieDetail = ({
                       userRating,
                       title,
                       imdbRating: Number(imdbRating),
+                      ratingTimesCount: ratingTimesCount.current,
                       runtime: Number(runtime.split(" ").at(0)),
                     })
                   }
