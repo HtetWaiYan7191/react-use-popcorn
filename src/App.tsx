@@ -11,18 +11,17 @@ import WatchedSummary from "./components/WatchedSummary";
 import ErrorMessage from "./components/Error";
 import MovieDetail from "./components/MovieDetail";
 import { watchMovieProps } from "./types/type";
+import { useMovies } from "./useMovies";
 
 const App = () => {
   const apiKey = "4df43510";
-  const [movies, setMovies] = useState([]);
   const [watchMovies, setWatchMovies] = useState(function () {
     const data = localStorage.getItem("watchMovies");
     const parseData = JSON.parse(data);
     return parseData ? parseData : [];
   });
-  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
-  const [error, setError] = useState("");
+  const {movies, loading, error} = useMovies(query, handleHideWatchedMovie);
   const [hideMovieList, setHideMovieList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<null | string>(null);
@@ -51,7 +50,7 @@ const App = () => {
     setShowDetail(false);
   };
 
-  const handleHideWatchedMovie = () => {
+  function handleHideWatchedMovie() {
     setHideWatchedMovieList(true);
     setShowDetail(false);
   };
@@ -60,42 +59,6 @@ const App = () => {
     setQuery(target);
   };
 
-  const fetchSearchMovies = async (controller) => {
-    try {
-      setError("");
-      setLoading(true);
-      if (query.length > 3) {
-        const result = await fetch(
-          `http://www.omdbapi.com/?apikey=${apiKey}&s=${query}`,
-          { signal: controller.signal }
-        );
-        if (!result.ok) {
-          throw new Error(" Cannot fetch the movies ");
-        }
-
-        const data = await result.json();
-        if (data.Response == "False") {
-          throw new Error(" Movie Not Found");
-        }
-        setMovies(data.Search);
-        setError("");
-      }
-    } catch (err) {
-      if (err.name !== "AbortError") setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const controller = new AbortController();
-    handleHideWatchedMovie();
-    fetchSearchMovies(controller);
-
-    return () => {
-      controller.abort;
-    };
-  }, [query]);
 
   useEffect(() => {
     localStorage.setItem("watchMovies", JSON.stringify(watchMovies));
